@@ -1,0 +1,114 @@
+package application2;
+
+import java.awt.BorderLayout;
+import java.awt.FlowLayout;
+import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import javax.swing.*;
+
+/**
+ * The GroupLayoutTest class demonstrates the features of GroupLayout using an interactive display.
+ * @author Alexander Li
+ * @version 2019-03-29
+ */
+public class GroupLayoutTest extends JPanel implements ActionListener{
+	
+	GroupLayout gl;
+	JPanel controlPanel;
+	JPanel displayPanel;
+	/**
+	 * The class constructor calls the superclass constructor (JPanel), sets a BorderLayout, and
+	 * executes display() and control(), which create the display and its controls respectively.
+	 * It then sets it to visible.
+	 */
+	public GroupLayoutTest(){
+		super();
+		this.setLayout(new BorderLayout());
+		//Create a control panel below
+		display();
+		controls();
+		this.setVisible(true);
+	}
+	
+	/**
+	 * The display() method creates a JPanel containing 10 buttons in a group layout.
+	 * The spacing and alignment of the group layout can be changed. Those changes will
+	 * be reflected in the arrangement of the buttons in this JPanel. The displayPanel is
+	 * added to the GroupLayoutTest instance.
+	 */
+	public void display(){
+		displayPanel = new JPanel();
+		gl = new GroupLayout(displayPanel);
+		displayPanel.setLayout(gl);
+		
+		JButton button1 = new JButton("Button 1");
+		JButton button2 = new JButton("LONG NAME Button 2");
+		JButton button3 = new JButton("3");
+		JButton button4 = new JButton("Button 4");
+		JButton button5 = new JButton("Button 5");
+		//JTextField textField1 = new JTextField(20);
+		
+		gl.setAutoCreateGaps(true);
+		gl.setAutoCreateContainerGaps(true);
+		
+		gl.setHorizontalGroup(
+				gl.createSequentialGroup()
+				.addGroup(gl.createParallelGroup(GroupLayout.Alignment.LEADING)
+						.addComponent(button1)
+						.addComponent(button3))
+				.addComponent(button2)
+				.addGroup(gl.createParallelGroup(GroupLayout.Alignment.TRAILING)
+						.addComponent(button4)
+						.addComponent(button5))
+				);
+		gl.setVerticalGroup(
+				gl.createSequentialGroup()
+				.addGroup(gl.createParallelGroup(GroupLayout.Alignment.BASELINE)
+						.addComponent(button1)
+						.addComponent(button2)
+						.addComponent(button4))
+				.addGroup(gl.createParallelGroup()
+						.addComponent(button3)
+						.addComponent(button5))
+				);
+		
+		
+		
+		this.add(displayPanel);
+	}
+	
+	/**
+	 * The controls() method creates a JPanel containing a vertical box which stores other JPanels.
+	 * Each JPanel contains one row of control components. 
+	 * This method also adds ActionListeners to its buttons.
+	 * The control rows are added to the box, which is
+	 * added to the controlPanel, which is added to the GroupLayoutTest instance.
+	 */
+	public void controls(){
+		controlPanel = new JPanel(new GridLayout(1,1,0,0));
+		JPanel row1Controls = new JPanel(new FlowLayout());
+		JPanel row2Controls = new JPanel(new FlowLayout());
+		
+		Box box1 = Box.createVerticalBox();
+		
+		box1.add(row1Controls);
+		box1.add(row2Controls);
+		controlPanel.add(box1);
+		
+		this.add(controlPanel, BorderLayout.PAGE_END);
+	}
+	
+	/**
+	 * The actionPerformed() method determines the source of the ActionEvent and
+	 * executes the appropriate action
+	 */
+	public void actionPerformed(ActionEvent ae){
+		String action = ae.getActionCommand();
+		switch(action){
+		
+		}
+		displayPanel.revalidate();
+		displayPanel.repaint();
+	}
+}

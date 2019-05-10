@@ -1,0 +1,136 @@
+package application2;
+
+import javax.swing.*;
+import java.awt.event.*;
+import java.awt.BorderLayout;
+import java.awt.FlowLayout;
+
+/**
+ * The ControlFrame class creates the Window in which all other graphics are located.
+ * The program demonstrates the FlowLayout and GroupLayout's features
+ * @author Alexander Li
+ * @version 2019-03-29
+ */
+public class ControlFrame extends JFrame implements ActionListener{
+	FlowLayoutTest flt;
+	GroupLayoutTest glt;
+	JLabel notice;
+	
+	/**
+	 * The class constructor calls the superclass constructor with a String parameter (title).
+	 * The default close operation, size, and layout of the constructor are also set.
+	 * The menu bar and its items are created. The Window is then set to visible.
+	 */
+	public ControlFrame(){
+		super("Layouts Demonstration");
+		this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		this.setSize(800, 400);
+		this.setLayout(new BorderLayout());
+		
+		JMenuBar myMenus = new JMenuBar();
+		JMenu fileMenu = new JMenu("File");
+		JMenuItem quitItem = new JMenuItem("Quit");
+		JMenuItem resetItem = new JMenuItem("Reset");
+		JMenuItem flowItem = new JMenuItem("Flow Layout Demo");
+		JMenuItem groupItem = new JMenuItem("Group Layout Demo");
+		quitItem.addActionListener(this);
+		resetItem.addActionListener(this);
+		flowItem.addActionListener(this);
+		groupItem.addActionListener(this);
+		
+		fileMenu.add(quitItem);
+		fileMenu.add(resetItem);
+		fileMenu.add(flowItem);
+		fileMenu.add(groupItem);
+		myMenus.add(fileMenu);
+		this.setJMenuBar(myMenus);
+		
+		startScreen();
+		
+		this.setVisible(true);
+	}
+	
+	/**
+	 * The startScreen() method creates the starting message in the Window.
+	 */
+	public void startScreen(){
+		notice = new JLabel("Layouts Demo Program");
+		notice.setHorizontalAlignment(JLabel.CENTER);
+		notice.setText("<html><body width=350><p>This program demonstrates the flow and group layouts with an interactive display using buttons."
+				+ "<br/><br/>To start the FlowLayout or GridLayout examples, select File+Flow Layout Demo or File+Group Layout Demo."
+				+ "<br/><br/>If you want to return to the starting screen, go to File+Reset."
+				+ "<br/><br/>To exit the program select File+Quit.</p></body></html>");
+				
+		this.add(notice, BorderLayout.CENTER);
+		this.setVisible(true);
+	}
+	
+	/**
+	 * The flowLayoutDemo() method clears the screen, creates an instance of FlowLayoutTest (a JPanel) 
+	 * and adds it to this JFrame. The panel contains the FlowLayout example.
+	 */
+	public void flowLayoutDemo(){
+		this.clearScreen();
+		flt = new FlowLayoutTest();
+		this.remove(notice);
+		this.add(flt, BorderLayout.CENTER);
+		this.revalidate();
+		this.repaint();
+	}
+	
+	/**
+	 * The groupLayoutDemo() method clears the screen, creates an instance of GroupLayoutTest (a JPanel)
+	 * and adds it to this frame. The panel contains the GroupLayout example.
+	 */
+	public void groupLayoutDemo(){
+		this.clearScreen();
+		glt = new GroupLayoutTest();
+		this.remove(notice);
+		this.add(glt, BorderLayout.CENTER);
+		this.revalidate();
+		this.repaint();
+	}
+	
+	/**
+	 * The clearScreen() method removes any added components in the Window of the JFrame.
+	 * When components are removed they are also garbage collected from memory.
+	 */
+	public void clearScreen(){
+		try{
+			this.remove(flt);
+		}
+		catch(NullPointerException e){}
+		try{
+			this.remove(glt);
+
+		}
+		catch(NullPointerException e){}
+		try{
+			this.remove(notice);
+		}
+		catch(NullPointerException e){}
+	}
+	
+	/**
+	 * The actionPerformed() method determines the command of a received ActionEvent
+	 * and acts correspondingly. This method can quit the program and call the 
+	 * flowLayoutDemo() and groupLayoutDemo() methods.
+	 * 
+	 * @param ae, an ActionEvent produced by an ActionListener linked to this class
+	 */
+	public void actionPerformed(ActionEvent ae){
+		if (ae.getActionCommand().equals("Quit")){
+			this.dispose();
+		}
+		else if (ae.getActionCommand().equals("Reset")){
+			clearScreen();
+			startScreen();
+		}
+		else if (ae.getActionCommand().equals("Flow Layout Demo")){
+			flowLayoutDemo();
+		}
+		else if (ae.getActionCommand().equals("Group Layout Demo")){
+			groupLayoutDemo();
+		}
+	}
+}
